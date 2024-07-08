@@ -1,3 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: khata-book-app
+  labels:
+    app: khata-book-app
+spec:
+  type: LoadBalancer
+  selector:
+    app: khata-book-app
+  ports:
+    - protocol: TCP
+      name: http
+      port: 9092
+      targetPort: 9092
+      nodePort: 30000
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -53,20 +71,4 @@ spec:
                   key: mysql-root-password
       imagePullSecrets:
         - name: regcred
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: khata-book-app
-  labels:
-    app: khata-book-app
-spec:
-  type: LoadBalancer
-  selector:
-    app: khata-book-app
-  ports:
-    - protocol: TCP
-      name: http
-      port: 9092
-      targetPort: 9092
-      nodePort: 30000
+
