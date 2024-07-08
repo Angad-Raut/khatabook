@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-conf
+data:
+  host: mysql   # The name of mysql service
+  database-name: khatabookDb     # The name of the database

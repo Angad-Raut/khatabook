@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: khata-book-app
+  labels:
+    app: khata-book-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: khata-book-app
+  template:
+    metadata:
+      labels:
+        app: khata-book-app
+    spec:
+      containers:
+        - name: khata-book-app
+          image: 9766945760/khatabook-app:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 9092
+          resources:
+            limits:
+              cpu: 0.2
+              memory: "200Mi"
+          env:
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secrets
+                  key: mysql-user-password
+            - name: MYSQL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-conf
+                  key: host
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-conf
+                  key: database-name
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secrets
+                  key: mysql-root-username
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secrets
+                  key: mysql-root-password
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: khata-book-app
+  labels:
+    app: khata-book-app
+spec:
+  type: LoadBalancer
+  selector:
+    app: khata-book-app
+  ports:
+    - protocol: TCP
+      name: http
+      port: 9092
+      targetPort: 9092
+      nodePort: 30000
