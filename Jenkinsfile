@@ -66,11 +66,11 @@ pipeline {
         stage('Deploy To K8s') {
              steps {
                   script{
-                      kubernetesDeploy (configs: 'khatabook-db-configmap.yaml', enableConfigSubstitution: false, kubeconfigId: 'kubeconfig')
-                      kubernetesDeploy (configs: 'khatabook-db-secrets.yaml', enableConfigSubstitution: false, kubeconfigId: 'kubeconfig')
-                      kubernetesDeploy (configs: 'khatabook-db-storage.yaml', enableConfigSubstitution: false, kubeconfigId: 'kubeconfig')
-                      kubernetesDeploy (configs: 'khatabook-db-deployment.yaml', enableConfigSubstitution: false, kubeconfigId: 'kubeconfig')
-                      kubernetesDeploy (configs: 'khatabook-app-deployment.yaml', enableConfigSubstitution: false, kubeconfigId: 'kubeconfig')
+                      kubernetesDeploy (configs: 'khatabook-db-configmap.yaml',enableConfigSubstitution: false, kubeconfigId: 'kubeconfig');
+                      kubernetesDeploy (configs: 'khatabook-db-secrets.yaml',enableConfigSubstitution: false, kubeconfigId: 'kubeconfig');
+                      kubernetesDeploy (configs: 'khatabook-db-storage.yaml',enableConfigSubstitution: false, kubeconfigId: 'kubeconfig');
+                      kubernetesDeploy (configs: 'khatabook-db-deployment.yaml',enableConfigSubstitution: false, kubeconfigId: 'kubeconfig');
+                      kubernetesDeploy (configs: 'khatabook-app-deployment.yaml',enableConfigSubstitution: false, kubeconfigId: 'kubeconfig');
                   }
                   bat 'docker logout'
                   bat 'docker rmi 9766945760/khatabook-app:latest'
