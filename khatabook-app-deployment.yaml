@@ -13,7 +13,7 @@ spec:
       name: http
       port: 9092
       targetPort: 9092
-      nodePort: 30000
+      nodePort: 30001
 
 ---
 apiVersion: apps/v1
