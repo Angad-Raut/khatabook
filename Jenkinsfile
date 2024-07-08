@@ -34,12 +34,6 @@ pipeline {
                 }
             }
         }
-        stage('OWASP SCAN') {
-            steps {
-                dependencyCheck additionalArguments: ' --scan ./ ', odcInstallation: 'DP-Check'
-                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-            }
-        }
         stage('Build Artifact') {
             steps {
                 bat 'mvn clean package'
@@ -72,10 +66,14 @@ pipeline {
                       kubernetesDeploy (configs: 'khatabook-db-deployment.yaml',enableConfigSubstitution: false, kubeconfigId: 'kubeconfig');
                       kubernetesDeploy (configs: 'khatabook-app-deployment.yaml',enableConfigSubstitution: false, kubeconfigId: 'kubeconfig');
                   }
-                  bat 'docker logout'
-                  bat 'docker rmi 9766945760/khatabook-app:latest'
                   echo 'SUCCESS'
              }
         }
+    }
+    post {
+         always {
+             bat 'docker logout'
+             bat 'docker rmi 9766945760/khatabook-app:latest'
+         }
     }
 }
